@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Row Edit</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+
+    <body>
+        <h:form id="form">
+            <p:dataTable id="basicDT" var="car" value="#{dtEditView.cars1}">
+                <f:facet name="header">
+                    Edit
+                </f:facet>
+                <p:column headerText="Id">
+                    <h:outputText value="#{car.id}" />
+                </p:column>
+                <p:column headerText="Year">
+                    <h:outputText value="#{car.year}" />
+                </p:column>
+                <p:column headerText="Brand">
+                    <h:outputText value="#{car.brand}" />
+                </p:column>
+                <p:column headerText="Color">
+                    <h:outputText value="#{car.color}" />
+                </p:column>
+                <p:column style="width:32px;text-align: center">
+                    <p:commandButton update=":form:carDetail" oncomplete="PF('carDialog').show()" icon="ui-icon-pencil" title="View">
+                        <f:setPropertyActionListener value="#{car}" target="#{dtEditView.selectedCar}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="carDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty dtEditView.selectedCar}" columnClasses="label,value">
+                        <f:facet name="header">
+                            
+                        </f:facet>
+
+                        <h:outputText value="Id:" />
+                        <p:inputText 
+                            value="#{dtEditView.selectedCar.id}"
+                            />
+                        <h:outputText value="Year" />
+                        <p:inputText value="#{dtEditView.selectedCar.year}" />
+
+                         <h:outputText value="Brand" />
+                         <p:inputText value="#{dtEditView.selectedCar.brand}" />
+                        
+                        <h:outputText value="Color:" />
+                        <p:inputText value="#{dtEditView.selectedCar.color}"/>
+
+
+                        <f:facet name="footer">
+                            <p:commandButton id="buttonValider"
+                                             value="Submit" 
+                                             actionListener="#{dtEditView.editerAction}"
+                                             oncomplete=":@carDialog.hide()"
+                                             process="@form:basicDT"
+                                             >
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </body>
+</html>
